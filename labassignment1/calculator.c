@@ -17,22 +17,22 @@ int main()
     switch (choice) {
         case 1:
             c = a + b;
-            printf("Sum = %d\n", c);
+            printf("Addition\nSum = %d\n", c);
             break;
 
         case 2:
             c = a - b;
-            printf("Subtraction = %d\n", c);
+            printf("Subtraction\nDifference = %d\n", c);
             break;
 
         case 3:
             c = a * b;
-            printf("Product = %d\n", c);
+            printf("Multiplication\nProduct = %d\n", c);
             break;
         
         case 4:
             c = a / b;
-            printf("Division = %d\n", c);
+            printf("Division\nQuotient = %d\n", c);
             break;
         
         default:
