@@ -1,10 +1,11 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <limits.h>
 
 #define LIMIT 50
 #define RAND_RANGE 100
@@ -49,17 +50,31 @@ int main(){
   for (i=0; i<LIMIT; i++) {
 
     // INSERT YOUR CODE HERE
-    
+    int smallest_idx = -1;
+    smallest = INT_MAX;
+    for (j=0; j<LIMIT; j++) {
+      if (valid[j] == true && source[j] < smallest) {
+        smallest = source[j];
+        smallest_idx = j;
+      }
+    }
+    valid[smallest_idx] = false;
+    dest[i] = smallest;
   }
   
   //print out sorted array in rows of 10
   printf("Destination array:\n");
-  
 
   // INSERT YOUR CODE HERE
-    
- 
-  
+  for (i=0; i < ((LIMIT/10)+1); i++) {
+    for (j=0; j<10; j++) {
+      if (i*10+j < LIMIT) {
+	printf("%.2d ", dest[i*10+j]);
+      }
+    }
+    printf("\n");
+  }
+  printf("\n");
   
   return 0;
 }
