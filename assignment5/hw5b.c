@@ -1,5 +1,5 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +8,7 @@
 
 #define LIMIT 200
 #define RAND_RANGE 95  // 95 printing characters x20-x7E
+
 
 // return random character
 char randChar() {
@@ -18,6 +19,7 @@ char randChar() {
   // see https://ascii.cl
   return ((char)((rand() % RAND_RANGE)+0x20));
 }
+
 
 // return the value of a char unless it is lower case
 // in which case return the upper case of the character
@@ -31,19 +33,81 @@ char upperChar(char c){
   }
 }
 
+// convert chars from "a - z" to "A - Z" and compare 
+bool lessEqual(char first, char second) {
+  if (first >= 97 && first <= 122){
+    first = first - 32;
+  }
+  if (second >= 97 && second <= 122){
+    second = second - 32;
+  }
+  if (first <= second) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
+// convert chars from "a - z" to "A - Z" and compare
+bool largerThan(char first, char second) {
+  if (first >= 97 && first <= 122){
+    first = first - 32;
+  }
+  if (second >= 97 && second <= 122){
+    second = second - 32;
+  }
+  if (first > second) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
 // pick pivot and then sort small and big parts 
 void quicky(char* data, int left, int right) {
 
   // ADD YOUR CODE HERE
+  int i, j, pivot, temp;
+  // let pivot = left index, i move from left to right, j is the opposite
+  if (left < right) {
+    pivot = left;
+    i = left;
+    j = right;
 
+    while (i < j) {
+      while (lessEqual(data[i], data[pivot]) && i < right) {
+        i++;
+      }
+      while (largerThan(data[j], data[pivot])) {
+        j--;
+      }
+
+      // swap data[i] and data[j]
+      if(i < j) {
+        temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+      }
+    }
+    
+    // swap data[pivot] and data[j]
+    temp = data[pivot];
+    data[pivot] = data[j];
+    data[j] = temp;
+
+    // apply quicksort to the left side subarray
+    quicky(data, left, j - 1);
+
+    // apply quicksort to the right side subarray
+    quicky(data, j + 1, right);
+  }
   return;
 }
 
 
-
-int main(){
+int main() {
 
   char source[LIMIT]; // array to hold input data values
 
@@ -80,7 +144,7 @@ int main(){
   for (i=0; i < ((LIMIT/10)+1); i++) {
     for (j=0; j<10; j++) {
       if (i*10+j < LIMIT) {
-	printf("%c ",source[i*10+j]);
+	      printf("%c ",source[i*10+j]);
       }
     }
     printf("\n");
