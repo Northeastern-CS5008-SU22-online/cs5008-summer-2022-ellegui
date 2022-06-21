@@ -1,5 +1,5 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,13 +73,13 @@ void insertTNode (tnode_t* rp, char* s) {
       c = getFirstChar(s);
 
       if (c == '\x01') {
-	printf("ILLEGAL CHARACTER IN INSTRUCTION STRING\n");
+        printf("ILLEGAL CHARACTER IN INSTRUCTION STRING\n");
       }
       
       // if instruction does not tell us to insert null, create a new tree node and add it as left child, recurse
       if (c != '\n') {
-	rp->left = newTNode(c);
-	insertTNode(rp->left, s);
+        rp->left = newTNode(c);
+        insertTNode(rp->left, s);
       }    
     }
 
@@ -89,13 +89,13 @@ void insertTNode (tnode_t* rp, char* s) {
       c = getFirstChar(s);
 
       if (c == '\x01') {
-	printf("ILLEGAL CHARACTER IN INSTRUCTION STRING\n");
+        printf("ILLEGAL CHARACTER IN INSTRUCTION STRING\n");
       }
 
       // if instruction does not tell us to insert null, create a new tree node and add it as right child, recurse
       if (c != '\n') {
-	rp->right = newTNode(c);
-	insertTNode(rp->right, s);
+        rp->right = newTNode(c);
+        insertTNode(rp->right, s);
       }   
     }
   }
@@ -135,13 +135,13 @@ void freeQNode (qnode_t* np) {
 };
 
 
-
 //---------------------------- QUEUE  ---------------------------- 
 // a queue - combining a head and a tail pointer
 typedef struct qq {
   qnode_t* head;
   qnode_t* tail;
 } queue_t;
+
 
 // create new empty queue (head and tail are set to NULL)
 queue_t* newQueue() {
@@ -154,12 +154,12 @@ queue_t* newQueue() {
   return qp;
 };
 
+
 // is the queue empty?
 bool isEmpty(queue_t* qp) {
   bool b = true;   // temporary bool to hold return value - initalize to default value
   if (qp != NULL) {
     b = (qp->head == NULL);
-
     // check to make if head is null that tail is null too
     if (b && (qp->tail != NULL)) {
       printf("ERROR Queue is NOT empty, but head is NULL!\n");
@@ -168,12 +168,30 @@ bool isEmpty(queue_t* qp) {
   return b;
 };
 
+
+// get the size of queue
+int qSize(queue_t* qp) {
+  qnode_t* qh = qp->head;
+  qnode_t* qt = qp->tail;
+  int q_size = 1;
+  if (isEmpty(qp)) {
+    return 0;
+  } 
+  else {
+    while (qh != qt) {
+    qh = qh->left;
+    q_size++;
+    }
+    return q_size;
+  }
+}
+
+
 // function to add a new queue node with tree node pointer d to tail of the queue
 void enqueue(queue_t* qp, tnode_t* d) {
   qnode_t* np = NULL; // temp queue node pointer
   
   if (qp != NULL) {
-
     if (isEmpty(qp)) {
       // queue is empty so insertion is easy
       qp->tail = newQNode(d);  // create new node and put it in the tail
@@ -184,37 +202,36 @@ void enqueue(queue_t* qp, tnode_t* d) {
       qp->tail = newQNode(d);   // create new node and put it in the tail
       np->left = qp->tail;  // old tail's left pointer points back to new tail node
       qp->tail->right = np; // new tail's right pointer points to old tail node
-    }    
+    } 
   }
-  
   return;
 };
 
+
 // function to take the node off the head of the queue and return its value
 tnode_t* dequeue(queue_t* qp) {
+
   tnode_t* tp = NULL;    // temp tree node pointer
   qnode_t* np = NULL; // temp queue node poitner
-  
+   
   if (qp != NULL) {
     np = qp->head;  // get a pointer to the head of the queue
 
     if (np != NULL) {
-	tp = np->tnode;      // get the value of data (tree node) in the head of the queue
+      tp = np->tnode;      // get the value of data (tree node) in the head of the queue
 
-	if (qp->head  == qp->tail) {      
-          // only one node in the queue, clear queue head and tail 
-	  qp->head = NULL;
-	  qp->tail = NULL;
-	} else {
-          // mulitple nodes in queue, clean up head pointer and new head of queue
-	  qp->head = np->left;   // new head points to next (left of old head) element of queue
-	  qp->head->right = NULL; // new head node has NULL right pointer
-	}
-	
-	freeQNode(np);  // free up the queue node that was dequeued
+      if (qp->head  == qp->tail) {
+              // only one node in the queue, clear queue head and tail 
+        qp->head = NULL;
+        qp->tail = NULL;
+      } else {
+              // mulitple nodes in queue, clean up head pointer and new head of queue
+        qp->head = np->left;   // new head points to next (left of old head) element of queue
+        qp->head->right = NULL; // new head node has NULL right pointer
+      }
+      freeQNode(np);  // free up the queue node that was dequeued
     }
   }
-    
   return tp;    // return the tree node from the head of the queue
 };
 
@@ -244,29 +261,58 @@ void freeQueue(queue_t* qp) {
 
 void preorder (tnode_t* np) {
   // INSERT YOUR CODE HERE
-
+  if (np == NULL){
+    return;
+  }
+  printf("%c", np->data);
+  preorder(np->left);
+  preorder(np->right);
   return;
 }
 
 void inorder (tnode_t* np) {
   // INSERT YOUR CODE HERE
-  
+  if (np == NULL){
+    return;
+  }
+  inorder(np->left);
+  printf("%c", np->data);
+  inorder(np->right);
   return;
 }
 
 void postorder (tnode_t* np) {
   // INSERT YOUR CODE HERE
-  
+  if (np == NULL){
+    return;
+  }
+  postorder(np->left);
+  postorder(np->right);
+  printf("%c", np->data);
   return;
 }
 
 
 void breadthFirst (tnode_t* root) {
   // INSERT YOUR CODE HERE
-  
+  queue_t* que = newQueue();
+  enqueue(que, root);
+  while(!isEmpty(que)) {
+    int que_size = qSize(que);
+    for (int i = 0; i < que_size; i++) {
+      tnode_t* q = dequeue(que);
+      printf("%c", q->data);
+      if (q->left != NULL) {
+        enqueue(que, q->left);
+      }
+      if (q->right != NULL) {
+        enqueue(que, q->right);
+      }
+    }
+  }
+  freeQueue(que);
   return;
 }
-
 
 
 // ========================== END INSERT FUNCTIONS HERE TO WALK TREE ==========================
@@ -324,8 +370,3 @@ int main() {
 
   return 0;
 }
-
-
-
-
-
