@@ -1,5 +1,5 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 // format of document is a bunch of data lines beginning with an integer (rank which we ignore)
 // then a ',' followed by a double-quoted string (city name)
@@ -68,7 +68,7 @@ int stateMachine(int inState, int nextChar, char* temp, char* inputLine, int* li
     // else go to ERRORSTATE
     //
 
-  int state=inState;
+  int state = inState;
   
   switch (state) {
   case STARTSTATE:
@@ -121,21 +121,42 @@ int stateMachine(int inState, int nextChar, char* temp, char* inputLine, int* li
     break;
          
   case S4:
-
     // *** YOUR CODE GOES HERE ***
-    
+    // looking for a comma
+    if (inputLine[nextChar] == ',') {
+      state = S5;
+    } else {
+      state = ERRORSTATE;
+    }
     break;
          
   case S5:
-
     // *** YOUR CODE GOES HERE ***
-    
+    // looking for a double quote
+    if (inputLine[nextChar] == '\"') {
+      state = S6;
+    } else {
+      state = ERRORSTATE;
+    }
     break;
          
   case S6:
-
     // *** YOUR CODE GOES HERE ***
-    
+    // accept digit and comma until you find a double quote
+    // for population
+    if (isDigit(inputLine[nextChar])) {
+      state = S6;
+      appendChar(temp, inputLine[nextChar]);
+    } else if (inputLine[nextChar] == ',') {
+      state = S6;
+    } else if (inputLine[nextChar] == '\"') {
+      state = ACCEPTSTATE;
+      // line number is complete - convert it to an int and store in destination
+      sscanf(temp, "%d", popInt_p); 
+      strcpy(temp, "");
+    } else {
+      state = ERRORSTATE;
+    } 
     break;
          
   case ACCEPTSTATE:
@@ -161,7 +182,7 @@ int main () {
   int  nextChar;               // index of next character in input string
   char temp[MAXSTRING];        // temp string to build up extracted strings from input characters
   
- 
+
   FILE* fp;
   fp = fopen("pop.csv","r");
 
@@ -175,18 +196,18 @@ int main () {
       strcpy(temp,"");       // temp = ""
 
       if (nextChar >= strlen(inputLine)){
-	// if no input string then go to ERRORSTATE
-	state = ERRORSTATE;
+        // if no input string then go to ERRORSTATE
+        state = ERRORSTATE;
       } 
 
       while ((state != ERRORSTATE) && (state != ACCEPTSTATE)) {
 
-	state = stateMachine(state, nextChar, temp, inputLine, &lineNum, &popInt, cityStr);
+        state = stateMachine(state, nextChar, temp, inputLine, &lineNum, &popInt, cityStr);
 
-	// advance input
-	nextChar++;
+        // advance input
+        nextChar++;
 	
-      }  
+      }
 
       // process the line - print out raw line and the parsed fields
       printf("> %.60s\n", inputLine);
