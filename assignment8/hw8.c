@@ -1,5 +1,5 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 // format of document is a bunch of data lines beginning with an integer (rank which we ignore)
 // then a ',' followed by a double-quoted string (city name)
@@ -44,7 +44,6 @@ keyvalue_t* newKeyValue(char* s, int i) {
     t->value = i;
     t->next = NULL;
   }
-
   return t;
 }
 
@@ -62,11 +61,14 @@ int hash1(char* s) {
 }
 
 // hash 2 is the sum of the char codes of string -
-// hint: use (int)s[i] to get the integer code of  character in s[i]
+// hint: use (int)s[i] to get the integer code of character in s[i]
 int hash2(char* s) {
   int sumOfS = 0;
 
   //**** YOUR CODE GOES HERE ****
+  for (int i = 0; i < strlen(s); i++) {
+    sumOfS += (int)s[i];
+  }
 
   return (sumOfS % HASHSIZE);
 }
@@ -76,10 +78,10 @@ int hash3(char* s) {
   long productOfS = 1;
 
   //**** YOUR CODE GOES HERE ****
+  productOfS = (int)s[0] * (int)s[1];
 
   return ((int)(productOfS % HASHSIZE));
 }
-
 
 
 
@@ -91,6 +93,16 @@ bool addToHashTable(keyvalue_t* t[], int loc, char* k, int v) {
   bool result = true;
 
   //**** YOUR CODE GOES HERE ****
+
+  keyvalue_t* head = t[loc];
+  if (head == NULL){
+    t[loc] = newKeyValue(k, v);
+    return result;
+  }
+  while (head->next != NULL) {
+    head = head->next;
+  }
+  head->next = newKeyValue(k, v);
 
   return result;
 }
@@ -190,17 +202,17 @@ int main () {
       strcpy(temp,"");
 
       if (nextChar >= strlen(inputLine)){
-	// if no input string then go to ERRORSTATE
-	state = ERRORSTATE;
+	    // if no input string then go to ERRORSTATE
+	      state = ERRORSTATE;
       } 
 
       // read input, a line at a time and use FSM to parse the input
       while ((state != ERRORSTATE) && (state != ACCEPTSTATE)) {
 	
-	state = stateMachine(state, nextChar, temp, inputLine, &lineNum, &popInt, cityStr);
+	      state = stateMachine(state, nextChar, temp, inputLine, &lineNum, &popInt, cityStr);
 
-	// advance input
-	nextChar++;
+        // advance input
+        nextChar++;
 	
       }	// end while state machine loop
 
@@ -217,7 +229,6 @@ int main () {
       
     } // end while file input loop
     
-
     fclose(fp);
   
   } else {
