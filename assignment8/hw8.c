@@ -94,15 +94,14 @@ bool addToHashTable(keyvalue_t* t[], int loc, char* k, int v) {
 
   //**** YOUR CODE GOES HERE ****
 
-  keyvalue_t* head = t[loc];
-  if (head == NULL){
-    t[loc] = newKeyValue(k, v);
-    return result;
+  if ((0 <= loc) && (loc < HASHSIZE)) {
+    keyvalue_t* kv = newKeyValue(k, v); 
+    kv->next = t[loc]; // insert kv in the front of the linked list
+    t[loc] = kv;
   }
-  while (head->next != NULL) {
-    head = head->next;
+  else {
+    result = false;
   }
-  head->next = newKeyValue(k, v);
 
   return result;
 }
