@@ -1,5 +1,5 @@
-// name: <your name here>
-// email: <your email here>
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 
 #include <stdio.h>
@@ -226,10 +226,24 @@ int main () {
   enqueue(q,0);
 
   printf("\nBREADTH FIRST TRAFERSAL\n");
+  done[0] = true;
   while (!isEmpty(q)) {
 
     // INSERT YOUR CODE HERE
-    
+
+    int cur = dequeue(q);
+    // only for start node, case 0
+    if (!done[cur]) {
+      done[cur] = true;
+    }
+    printf("NODE: %d\n", cur);
+    for (int i = 0 ; i < 10; i++) {
+      // mark the node done to prevent duplicate search
+      if (E[cur][i] && !done[i]){
+        done[i] = true;
+        enqueue(q, i);
+      }
+    }
   }
 
   // print out nodes that are unreachable
