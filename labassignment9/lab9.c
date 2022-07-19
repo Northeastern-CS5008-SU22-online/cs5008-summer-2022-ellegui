@@ -9,7 +9,7 @@
 //define a structure for queue
 typedef struct {
     int a[MAX];
-    int front,rear;
+    int front, rear;
 } Queue;
 
 //isEmpty function
@@ -44,11 +44,9 @@ void enqueue(Queue *q, int e) {
 
 /*Create graph in adjacency matrix form*/
 void creategraph(int arr[][MAX], int V) {
-    int i,j;
-    for(i =1; i<=V; i++)
-    {
-        for(j = 1; j<=V; j++)
-        {
+    int i, j;
+    for(i = 1; i<=V; i++) {
+        for(j = 1; j<=V; j++) {
             arr[i][j] = 0;
         }
     }
@@ -63,10 +61,8 @@ void addEdge(int arr[][MAX], int src, int dest) {
 void printAdjMatrix(int arr[][MAX], int V) {
      int i, j;
 
-     for(i =1; i<=V; i++)
-     {
-        for(j = 1; j<=V; j++)
-        {
+     for(i =1; i<=V; i++) {
+        for(j = 1; j<=V; j++) {
             printf("%6d ", arr[i][j]);
         }
         printf("\n");
@@ -75,9 +71,9 @@ void printAdjMatrix(int arr[][MAX], int V) {
 
 /*calculate the indegree of each vertex by looping through all vertices and edges in the adjacency matrix*/
 int find_indegree(int arr[][MAX], int node, int n) {
-    int i,in_deg = 0;
+    int i, in_deg = 0;
     for(i=1; i<=n; i++) {
-        if(arr[i][node]==1)
+        if(arr[i][node] == 1)
             in_deg++;
     }
     return in_deg;
@@ -100,7 +96,7 @@ void topologicalOrder(int arr[][MAX], Queue *t, int n) {
         delNode = dequeue(t);
         result[j] = delNode;
         j++;
-        for (int k = 0 ; k < n ; k++){
+        for (int k = 1 ; k <= n; k++) {
             if (arr[delNode][k] == 1){
                 indeg[k] -= 1;
                 if (indeg[k] == 0){
