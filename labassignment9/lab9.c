@@ -1,5 +1,5 @@
-// Enter your name here
-//Enter your email here
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -7,51 +7,43 @@
 #define MAX 50
 
 //define a structure for queue
-typedef struct
-{
+typedef struct {
     int a[MAX];
     int front,rear;
-}Queue;
+} Queue;
 
 //isEmpty function
-int isEmpty(int front)
-{
-    if(front==-1)
+int isEmpty(int front) {
+    if(front == -1)
         return 1;
     else
         return 0;
 }
 
 //Dequeue function to dequeue a vertex from the queue*/
-int dequeue(Queue *q)
-{
-    
-    int x=q->a[q->front];
-    if(q->front==q->rear)
-    {
-        q->front=q->rear=-1;
+int dequeue(Queue *q) {
+
+    int x = q->a[q->front];
+    if(q->front == q->rear) {
+        q->front = q->rear = -1;
+    } else {
+        q->front++;
     }
-    else
-     {
-         q->front++;
-     }
     return x;
 }
+
 /* Queue to hold the vertices with in-degree zero*/
-void enqueue(Queue *q, int e)
-{
+void enqueue(Queue *q, int e) {
 
     q->rear++;
-    q->a[q->rear]=e;
-    if(q->front==-1)
-    {
-        q->front=0;
+    q->a[q->rear] = e;
+    if(q->front == -1) {
+        q->front = 0;
     }
 }
 
 /*Create graph in adjacency matrix form*/
-void creategraph(int arr[][MAX],int V)
-{
+void creategraph(int arr[][MAX], int V) {
     int i,j;
     for(i =1; i<=V; i++)
     {
@@ -63,66 +55,71 @@ void creategraph(int arr[][MAX],int V)
 }
 
 /* Function to add edges from source to destination*/
-void addEdge(int arr[][MAX],int src, int dest)
-{
-     arr[src][dest] = 1;
+void addEdge(int arr[][MAX], int src, int dest) {
+    arr[src][dest] = 1;
 }
 
 /*Print the adjacency matrix of the Graph*/
-void printAdjMatrix(int arr[][MAX],int V)
-{
+void printAdjMatrix(int arr[][MAX], int V) {
      int i, j;
 
      for(i =1; i<=V; i++)
      {
-         for(j = 1; j<=V; j++)
-         {
-             printf("%6d ", arr[i][j]);
-         }
-         printf("\n");
+        for(j = 1; j<=V; j++)
+        {
+            printf("%6d ", arr[i][j]);
+        }
+        printf("\n");
      }
 }
+
 /*calculate the indegree of each vertex by looping through all vertices and edges in the adjacency matrix*/
-int find_indegree(int arr[][MAX], int node)
-{
+int find_indegree(int arr[][MAX], int node, int n) {
     int i,in_deg = 0;
-    int n=7;
-    for(i=1;i<=n;i++)
-    {
+    for(i=1; i<=n; i++) {
         if(arr[i][node]==1)
             in_deg++;
     }
     return in_deg;
-    
-    
 }
+
 /*Function to perform topological sorting of the Graph */
-void topologicalOrder(int arr[][MAX], Queue *t, int n)
-{
-    int j=0,delNode,i;
-    int result[MAX],indeg[MAX];
-    for(i=1;i<=n;i++)
-    {
-        indeg[i]=find_indegree(arr,i);
-        if(indeg[i]==0)
-            enqueue(t,i);
+void topologicalOrder(int arr[][MAX], Queue *t, int n) {
+    int j=0, delNode, i;
+    int result[MAX], indeg[MAX];
+    //  calculate in-degree of every node
+    for(i=1; i<=n; i++) {
+        indeg[i] = find_indegree(arr, i, n);
+        if(indeg[i] == 0) {
+            enqueue(t, i);
+        }
+    }
+    
+    //insert your code here
+    while (!isEmpty(t->front)) {
+        delNode = dequeue(t);
+        result[j] = delNode;
+        j++;
+        for (int k = 0 ; k < n ; k++){
+            if (arr[delNode][k] == 1){
+                indeg[k] -= 1;
+                if (indeg[k] == 0){
+                    enqueue(t, k);
+                }
+            }
+        }
     }
     
     
-    
-    //insert your code here
-    
-    
-    
     printf("topological ordering\n");
-    for(i=0; i<j;i++)
-        printf("%d\t",result[i]);
+    for(i=0; i<j; i++)
+        printf("%d\t", result[i]);
     printf("\n");
     
 }
+
 /*Main Program*/
-int main()
-{
+int main() {
     int adjMatrix[MAX][MAX];
     int vertices=7;
     Queue t;
