@@ -1,5 +1,5 @@
-/* Enter your name here*/
-/* Enter your email here*/
+// name: Zixian Gui
+// email: gui.zi@northeastern.edu
 
 #include<stdio.h>
 #define MAXN 50       /* largest number of books */
@@ -23,6 +23,7 @@ int sum(int arr[], int from, int to)
         total += arr[i];
     return total;
 }
+
 /* function to print the books with partition*/
 void print_books(int s[], int start, int end)
 {
@@ -71,29 +72,34 @@ void partition(int s[], int n, int k)
     
     
     /*Insert your code here*/
+    p[0] = 0;
+    for (i = 1; i < n + 1; i++) {
+        p[i] = p[i - 1] + s[i];
+        m[i][1] = p[i];
+    }
+
+    for (j = 1; j < k + 1; j++) {
+        m[1][j] = s[1];
+    }
     
-  
     
-    
-/* 2 to k partitions*/
-for (i=2; i<=n; i++)
-    
-for (j=2; j<=k; j++)
-{
-    m[i][j]=MAXINT; /*initialize infinity*/
-            
-    for (x=1; x<=i-1; x++)
-    {
-    cost = max(m[x][j-1],p[i]-p[x]);
-       //cost = max(m[x][j-1],sum(s,x+1,i));
-        if(m[i][j]>cost)
-            {
-            m[i][j]=cost;
-/* position of dividers is stored in matrix d*/
-            d[i][j] = x;
+    /* 2 to k partitions*/
+    for (i=2; i<=n; i++) {
+        for (j=2; j<=k; j++) {
+            m[i][j]=MAXINT; /*initialize infinity*/
+                
+            for (x=1; x<=i-1; x++) {
+                cost = max(m[x][j-1],p[i]-p[x]);
+                //cost = max(m[x][j-1],sum(s,x+1,i));
+                if(m[i][j]>cost) {
+                    m[i][j]=cost;
+        /* position of dividers is stored in matrix d*/
+                    d[i][j] = x;
+                }
             }
         }
-}
+    }
+    
     print_matrix(m,n,k);
     printf("Partition of the books are:\n");
     reconstruct_partition(s,d,n,k);        /* print book partition */
@@ -101,8 +107,7 @@ for (j=2; j<=k; j++)
 
 
 /*-------------- Main program--------*/
-int main()
-{
+int main() {
     int s[MAXN];       /* book thicknesses to partition */
     int n,i;           /* how many books? */
     int k;             /* how many partitions? */
@@ -118,6 +123,3 @@ int main()
     partition(s,n,k);
     return 0;
 }
-
- 
- 
